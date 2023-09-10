@@ -1,8 +1,10 @@
 <template>
     <div class="w-25">
-        <div ref="dropzone" class="btn d-block p-5 bg-dark text-center text-light">
+        <input v-model="title" type="text" class="form-control mb-3" placeholder="title">
+        <div ref="dropzone" class="btn d-block p-5 bg-dark text-center text-light mb-3">
             Upload
         </div>
+        <input @click.prevent="store" type="submit" class="btn btn-primary" value="add">
     </div>
 </template>
 
@@ -13,15 +15,29 @@ import Dropzone from 'dropzone'
 
         data(){
             return {
-                dropzone: null
+                dropzone: null,
+                title: null
+
             }
         },
 
         mounted() {
             this.dropzone = new Dropzone(this.$refs.dropzone, {
-                url: "hgfhf",
-                clickable: false
+                url: "/api/posts",
+                autoProcessQueue: false
             })
+        },
+
+        methods: {
+            store() {
+                const images = new FormData()
+                const files = this.dropzone.getAcceptedFiles()
+                files.forEach(file => {
+                    images.append('images[]', file)
+                })
+                axios.post('/api/posts', images)
+                console.log(this.dropzone.getAcceptedFiles());
+            }
         }
     }
 
