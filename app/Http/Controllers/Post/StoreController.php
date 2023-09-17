@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Post;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Post\StoreRequest;
+
 use App\Models\Image;
 use App\Models\Post;
 use Carbon\Carbon;
@@ -22,8 +23,11 @@ class StoreController extends Controller
         $post = Post::firstOrCreate($data);
 
         foreach ($images as $image){
+
             $name = md5(Carbon::now() . '_' . $image->getClientOriginalName()) . '.' . $image->getClientOriginalExtension();
+
             $filePath = Storage::disk('public')->putFileAs('/images', $image, $name);
+
             $previewName = 'pre_' . $name;
 
             Image::create([
@@ -36,12 +40,8 @@ class StoreController extends Controller
             \Intervention\Image\Facades\Image::make($image)->fit(100, 100)
             ->save(storage_path('app/public/images/' . $previewName));
 
-
-
-
-//            dump($previewName);
-
-            return response()->json(['message' => 'success']);
         }
+
+        return response()->json(['message' => 'success']);
     }
 }

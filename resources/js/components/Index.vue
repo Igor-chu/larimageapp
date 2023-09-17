@@ -5,9 +5,23 @@
         <div ref="dropzone" class="btn d-block p-5 bg-dark text-center text-light mb-3">
             Upload
         </div>
-        <div class="mb-3">
-            <vue-editor v-model="content" />
-        </div>
+        <input v-model="content" type="text" class="form-control mb-3" placeholder="content">
+
+<!--        <div class="mb-3">-->
+<!--            <vue-editor v-model="content" />-->
+<!--        </div>-->
+
+<!--        <div>-->
+<!--            <QuillEditor-->
+<!--                v-model="content"-->
+<!--                theme="snow"-->
+<!--                toolbar="full"-->
+<!--                useCustomImageHandler-->
+<!--                @imageAdded="handleImageAdded"-->
+
+<!--            />-->
+<!--        </div>-->
+
         <input @click.prevent="store" type="submit" class="btn btn-primary" value="add">
 
         <div class="mt-5">
@@ -27,7 +41,10 @@
 
 <script>
 import Dropzone from 'dropzone';
-import { VueEditor } from "vue2-editor";
+import { QuillEditor } from '@vueup/vue-quill'
+import '@vueup/vue-quill/dist/vue-quill.snow.css';
+
+
     export default {
         name: "Index",
 
@@ -36,12 +53,12 @@ import { VueEditor } from "vue2-editor";
                 dropzone: null,
                 title: null,
                 post: null,
-                content: "<h1>Some initial content</h1>"
+                content: null
             }
         },
 
         components: {
-            VueEditor
+            QuillEditor
         },
 
         mounted() {
@@ -49,7 +66,7 @@ import { VueEditor } from "vue2-editor";
                 url: "/api/posts",
                 autoProcessQueue: false,
                 addRemoveLinks: true
-            }),
+            })
 
             this.getPost()
         },
@@ -65,8 +82,8 @@ import { VueEditor } from "vue2-editor";
 
                 data.append('title', this.title)
                 this.title = ''
-                // data.append('content', this.content)
-                // this.content = ''
+                data.append('content', this.content)
+                this.content = ''
 
                 axios.post('/api/posts', data)
                     .then(res => {
@@ -81,6 +98,10 @@ import { VueEditor } from "vue2-editor";
                         console.log(res.data.data);
                     })
             }
+
+            // handleImageAdded(file, Editor, cursorLocation, resetUploader) {
+            //     console.log(file)
+            // }
         }
     }
 
