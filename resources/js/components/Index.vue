@@ -5,22 +5,22 @@
         <div ref="dropzone" class="btn d-block p-5 bg-dark text-center text-light mb-3">
             Upload
         </div>
-        <input v-model="content" type="text" class="form-control mb-3" placeholder="content">
 
-<!--        <div class="mb-3">-->
-<!--            <vue-editor v-model="content" />-->
-<!--        </div>-->
+<!--        <input v-model="content" type="text" class="form-control mb-3" placeholder="content">-->
 
-<!--        <div>-->
-<!--            <QuillEditor-->
-<!--                v-model="content"-->
-<!--                theme="snow"-->
-<!--                toolbar="full"-->
-<!--                useCustomImageHandler-->
-<!--                @imageAdded="handleImageAdded"-->
 
-<!--            />-->
-<!--        </div>-->
+        <div class="mb-3">
+            <QuillEditor
+                v-model="content"
+                debug="true"
+                theme="snow"
+                toolbar="full"
+                getCo
+
+                useCustomImageHandler
+                @image-added="handleImageAdded"
+            />
+        </div>
 
         <input @click.prevent="store" type="submit" class="btn btn-primary" value="add">
 
@@ -30,7 +30,7 @@
 
                 <div v-for="image in post.images">
                     <img width="100" :src="image.preview_url" class="mb-3">
-                    <img width="300" :src="image.url">
+                    <img width="300" :src="image.url" class="mb-3">
                 </div>
 
                 <p>{{post.content}}</p>
@@ -41,7 +41,7 @@
 
 <script>
 import Dropzone from 'dropzone';
-import { QuillEditor } from '@vueup/vue-quill'
+import { QuillEditor } from '@vueup/vue-quill';
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
 
 
@@ -97,11 +97,11 @@ import '@vueup/vue-quill/dist/vue-quill.snow.css';
                         this.post = res.data.data
                         console.log(res.data.data);
                     })
-            }
+            },
 
-            // handleImageAdded(file, Editor, cursorLocation, resetUploader) {
-            //     console.log(file)
-            // }
+            handleImageAdded(file, Editor, cursorLocation, resetUploader) {
+                console.log(file)
+            }
         }
     }
 
